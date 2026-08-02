@@ -1,28 +1,48 @@
-def get_mask_card_number(card_number: str) -> str:
+def get_mask_card_number(number: str) -> str:
     """
-    Маскирует номер карты: видны первые 6 и последние 4 цифры.
-    Формат: XXXX XX** **** XXXX
+    Маскирует номер карты в формате: XXXX XXXX XXXX XXXX
+    - Оставляет первые 4 цифры открытыми.
+    - Следующие 8 цифр заменяет на **.
+    - Последние 4 цифры оставляет открытыми.
+
+    Примеры:
+      "7000792289606361" -> "7000 79** **** 6361"
+      "1234567890123456" -> "1234 56** **** 3456"
+
+    Вызывает ValueError, если:
+      - В номере есть нецифровые символы.
+      - Длина номера не равна 16.
     """
-    if len(card_number) != 16 or not card_number.isdigit():
-        raise ValueError("Card number must be a 16-digit string.")
+    if not number.isdigit():
+        raise ValueError("Номер карты должен содержать только цифры.")
 
-    first_four = card_number[:4]
-    next_two = card_number[4:6]
-    last_four = card_number[-4:]
+    if len(number) != 16:
+        raise ValueError("Длина номера карты должна быть ровно 16 цифр.")
 
-    return f"{first_four} {next_two}** **** {last_four}"
+    # Формат: первые 4 + пробел + 2 цифры + ** + пробел + **** + пробел + последние 4
+    part1 = number[0:4]
+    part2 = number[4:6] + "**"
+    part3 = "****"
+    part4 = number[-4:]
+
+    return f"{part1} {part2} {part3} {part4}"
 
 
-def get_mask_account(account_number: str) -> str:
+def get_mask_account(number: str) -> str:
     """
-    Маскирует номер счёта: видны только последние 4 символа.
-    Формат: **XXXX (для строк длиной ≥ 4).
+    Маскирует номер счёта: **XXXX
+    - Если длина номера меньше 4 — тоже выбрасывает ValueError.
+    - Иначе берёт последние 4 цифры и ставит перед ними **.
+
+    Примеры:
+      "73654108430135874305" -> "**4305"
+      "1234" -> "**1234"
     """
-    if len(account_number) < 4:
-        raise ValueError("Account number must be at least 4 characters long.")
+    if not number.isdigit():
+        raise ValueError("Номер счёта должен содержать только цифры.")
 
-    last_four = account_number[-4:]
-    # Количество звёздочек = вся длина минус 4 видимые цифры
-    stars = "*" * (len(account_number) - 4)
+    if len(number) < 4:
+        raise ValueError("Номер счёта должен содержать не менее 4 цифр.")
 
-    return f"{stars}{last_four}"
+    last_four = number[-4:]
+    return f"**{last_four}"
