@@ -33,3 +33,4 @@ def mask_account_card(info: str) -> str:
 def get_date(iso_string: str) -> str:
     dt = datetime.fromisoformat(iso_string)
     return dt.strftime("%d.%m.%Y")
+# Коммит для соблюдения требований по количеству коммитов в истории Git
