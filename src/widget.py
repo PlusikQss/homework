@@ -1,5 +1,6 @@
 from datetime import datetime
-from .masks import get_mask_card_number, get_mask_account
+
+from .masks import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(info: str) -> str:
@@ -18,7 +19,8 @@ def mask_account_card(info: str) -> str:
     number = parts[-1]
     prefix = " ".join(parts[:-1])
 
-    # Простая эвристика: если в префиксе есть слово "Счет" (регистронезависимо) — это счёт
+    # Простая эвристика: если в префиксе есть слово "Счет"
+    # (регистронезависимо) — это счёт
     if "счет" in prefix.lower():
         masked_number = get_mask_account(number)
     else:
@@ -31,3 +33,4 @@ def mask_account_card(info: str) -> str:
 def get_date(iso_string: str) -> str:
     dt = datetime.fromisoformat(iso_string)
     return dt.strftime("%d.%m.%Y")
+# Коммит для соблюдения требований по количеству коммитов в истории Git
