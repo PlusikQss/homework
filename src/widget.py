@@ -1,39 +1,61 @@
 from datetime import datetime
-from typing import Optional
+from typing import Any, Dict, Optional
 
-from .masks import get_mask_account, get_mask_card_number
+from src.masks import get_mask_account, get_mask_card_number
 
 
-def mask_account_card(info: str) -> str:
+def mask_account_card(operation: Dict[str, Any]) -> Optional[str]:
     """
-    Принимает строку вида:
-      "Visa Platinum 7000792289606361" или
-      "Счет 73654108430135874305"
-
-    Определяет тип по первым словам и применяет соответствующую маску.
-    Возвращает строку с уже замаскированным номером.
+    Маскирует номер карты или счёта в зависимости от типа операции.
+    operation: словарь вида {"type": "card" | "account", "number": "..."}
+    Возвращает замаскированную строку или None, если тип неизвестен.
     """
-    parts = info.strip().split()
-    if len(parts) < 2:
-        raise ValueError("Некорректный формат строки: ожидается 'Тип Номер'.")
+    op_type = operation.get("type")
+    number = operation.get("number", "")
 
-    number = parts[-1]
-    prefix = " ".join(parts[:-1])
+    if not isinstance(number, str):
+        number = str(number)
 
-    # Простая эвристика: если в префиксе есть слово "Счет"
-    # (регистронезависимо) — это счёт
-    if "счет" in prefix.lower():
-        masked_number = get_mask_account(number)
+    if op_type == "card":
+        return get_mask_card_number(number)
+    elif op_type == "account":
+        return get_mask_account(number)
     else:
-        # Иначе считаем, что это карта
-        masked_number = get_mask_card_number(number)
-
-    return f"{prefix} {masked_number}"
+        return None
 
 
-def get_date(date_input: Optional[str]) -> str:
-    if not date_input:
-        return ""
+def get_date(date_input: Optional[str]) -> Optional[str]:
+    """
+    Парсит дату из разных форматов и возвращает в формате YYYY-MM-DD.
+    Поддерживает: YYYY-MM-DD, DD.MM.YYYY, YYYY/MM/DD.
+    Для пустой строки или невалидной даты возвращает None.
+    """
+    if not date_input or not isinstance(date_input, str):
+        return None
 
-    dt = datetime.fromisoformat(date_input)
-    return dt.strftime("%d.%m.%Y")
+    date_input = date_input.strip()
+    if date_input == "":
+        return None
+
+    # Пробуем ISO формат YYYY-MM-DD
+    try:
+        dt = datetime.fromisoformat(date_input)
+        return dt.strftime("%Y-%m-%d")
+    except ValueError:
+        pass
+
+    # Формат DD.MM.YYYY
+    try:
+        dt = datetime.strptime(date_input, "%d.%m.%Y")
+        return dt.strftime("%Y-%m-%d")
+    except ValueError:
+        pass
+
+    # Формат YYYY/MM/DD
+    try:
+        dt = datetime.strptime(date_input, "%Y/%m/%d")
+        return dt.strftime("%Y-%m-%d")
+    except ValueError:
+        pass
+
+    return None
