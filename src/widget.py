@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from .masks import get_mask_account, get_mask_card_number
 
@@ -30,6 +31,9 @@ def mask_account_card(info: str) -> str:
     return f"{prefix} {masked_number}"
 
 
-def get_date(iso_string: str) -> str:
-    dt = datetime.fromisoformat(iso_string)
+def get_date(date_input: Optional[str]) -> str:
+    if not date_input:
+        return ""
+
+    dt = datetime.fromisoformat(date_input)
     return dt.strftime("%d.%m.%Y")
