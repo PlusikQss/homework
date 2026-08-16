@@ -23,6 +23,10 @@ lint = [
     "isort>=8.0.1,<9.0.0",
     "mypy>=2.3.0,<3.0.0"
 ]
+dev = [
+    "pytest-cov (>=7.1.0,<8.0.0)",
+    "pytest (>=9.1.1,<10.0.0)"
+]
 
 [tool.poetry]
 packages = [{include = "src"}]
@@ -31,13 +35,26 @@ packages = [{include = "src"}]
 line-length = 88
 target-version = ['py311']
 
+
 [tool.isort]
 profile = "black"
-line-length = 88
-skip = [".venv", "__pycache__", "build", "dist"]
+# line-length не указываем — profile сам задаёт нужную длину
 
 [tool.mypy]
 python_version = "3.11"
 strict = true
 warn_return_any = true
 disallow_untyped_defs = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+
+[tool.coverage.run]
+source = ["src"]
+omit = ["tests/*", "*/__pycache__/*"]
+
+[tool.coverage.report]
+show_missing = true

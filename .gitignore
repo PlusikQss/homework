@@ -32,7 +32,6 @@ poetry.lock
 # Testing / Coverage
 .pytest_cache/
 .coverage
-htmlcov/
 
 # Mypy
 .mypy_cache/

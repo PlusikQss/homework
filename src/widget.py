@@ -1,35 +1,52 @@
 from datetime import datetime
 
-from .masks import get_mask_account, get_mask_card_number
+from src.masks import get_mask_account, get_mask_card_number
 
 
-def mask_account_card(info: str) -> str:
+def mask_account_card(data: str) -> str:
     """
-    Принимает строку вида:
-      "Visa Platinum 7000792289606361" или
-      "Счет 73654108430135874305"
-
-    Определяет тип по первым словам и применяет соответствующую маску.
-    Возвращает строку с уже замаскированным номером.
+    Принимает строку формата:
+    - "Visa Platinum 7000792289606361"
+    - "Счет 73654108430135874305"
+    Возвращает строку с замаскированным номером.
     """
-    parts = info.strip().split()
+    if not data or not isinstance(data, str):
+        raise ValueError("Входные данные должны быть непустой строкой.")
+
+    parts = data.split()
     if len(parts) < 2:
-        raise ValueError("Некорректный формат строки: ожидается 'Тип Номер'.")
+        raise ValueError("Некорректный формат: ожидается тип и номер.")
 
+    # Ищем номер — это последний элемент, который содержит только цифры
     number = parts[-1]
-    prefix = " ".join(parts[:-1])
+    name = " ".join(parts[:-1])
 
-    # Простая эвристика: если в префиксе есть слово "Счет"
-    # (регистронезависимо) — это счёт
-    if "счет" in prefix.lower():
-        masked_number = get_mask_account(number)
+    if not number.isdigit():
+        raise ValueError("Номер должен содержать только цифры.")
+
+    # Определяем тип по первому слову
+    if parts[0].lower() == "счет":
+        masked = get_mask_account(number)
     else:
-        # Иначе считаем, что это карта
-        masked_number = get_mask_card_number(number)
+        masked = get_mask_card_number(number)
 
-    return f"{prefix} {masked_number}"
+    return f"{name} {masked}"
 
 
-def get_date(iso_string: str) -> str:
-    dt = datetime.fromisoformat(iso_string)
-    return dt.strftime("%d.%m.%Y")
+def get_date(date_string: str) -> str:
+    """
+    Принимает строку с датой в формате ISO (например, "2024-03-11T02:26:18.671407").
+    Возвращает дату в формате "ДД.ММ.ГГГГ".
+    """
+    if not date_string or not isinstance(date_string, str):
+        raise ValueError("Входные данные должны быть непустой строкой.")
+
+    # Разбираем только дату (часть до T)
+    date_part = date_string.split("T")[0]
+
+    try:
+        # Пробуем ISO формат
+        dt = datetime.fromisoformat(date_part)
+        return dt.strftime("%d.%m.%Y")
+    except ValueError as exc:
+        raise ValueError("Некорректный формат даты.") from exc
