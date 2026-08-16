@@ -1,61 +1,52 @@
 from datetime import datetime
-from typing import Any, Dict, Optional
 
 from src.masks import get_mask_account, get_mask_card_number
 
 
-def mask_account_card(operation: Dict[str, Any]) -> Optional[str]:
+def mask_account_card(data: str) -> str:
     """
-    Маскирует номер карты или счёта в зависимости от типа операции.
-    operation: словарь вида {"type": "card" | "account", "number": "..."}
-    Возвращает замаскированную строку или None, если тип неизвестен.
+    Принимает строку формата:
+    - "Visa Platinum 7000792289606361"
+    - "Счет 73654108430135874305"
+    Возвращает строку с замаскированным номером.
     """
-    op_type = operation.get("type")
-    number = operation.get("number", "")
+    if not data or not isinstance(data, str):
+        raise ValueError("Входные данные должны быть непустой строкой.")
 
-    if not isinstance(number, str):
-        number = str(number)
+    parts = data.split()
+    if len(parts) < 2:
+        raise ValueError("Некорректный формат: ожидается тип и номер.")
 
-    if op_type == "card":
-        return get_mask_card_number(number)
-    elif op_type == "account":
-        return get_mask_account(number)
+    # Ищем номер — это последний элемент, который содержит только цифры
+    number = parts[-1]
+    name = " ".join(parts[:-1])
+
+    if not number.isdigit():
+        raise ValueError("Номер должен содержать только цифры.")
+
+    # Определяем тип по первому слову
+    if parts[0].lower() == "счет":
+        masked = get_mask_account(number)
     else:
-        return None
+        masked = get_mask_card_number(number)
+
+    return f"{name} {masked}"
 
 
-def get_date(date_input: Optional[str]) -> Optional[str]:
+def get_date(date_string: str) -> str:
     """
-    Парсит дату из разных форматов и возвращает в формате YYYY-MM-DD.
-    Поддерживает: YYYY-MM-DD, DD.MM.YYYY, YYYY/MM/DD.
-    Для пустой строки или невалидной даты возвращает None.
+    Принимает строку с датой в формате ISO (например, "2024-03-11T02:26:18.671407").
+    Возвращает дату в формате "ДД.ММ.ГГГГ".
     """
-    if not date_input or not isinstance(date_input, str):
-        return None
+    if not date_string or not isinstance(date_string, str):
+        raise ValueError("Входные данные должны быть непустой строкой.")
 
-    date_input = date_input.strip()
-    if date_input == "":
-        return None
+    # Разбираем только дату (часть до T)
+    date_part = date_string.split("T")[0]
 
-    # Пробуем ISO формат YYYY-MM-DD
     try:
-        dt = datetime.fromisoformat(date_input)
-        return dt.strftime("%Y-%m-%d")
-    except ValueError:
-        pass
-
-    # Формат DD.MM.YYYY
-    try:
-        dt = datetime.strptime(date_input, "%d.%m.%Y")
-        return dt.strftime("%Y-%m-%d")
-    except ValueError:
-        pass
-
-    # Формат YYYY/MM/DD
-    try:
-        dt = datetime.strptime(date_input, "%Y/%m/%d")
-        return dt.strftime("%Y-%m-%d")
-    except ValueError:
-        pass
-
-    return None
+        # Пробуем ISO формат
+        dt = datetime.fromisoformat(date_part)
+        return dt.strftime("%d.%m.%Y")
+    except ValueError as exc:
+        raise ValueError("Некорректный формат даты.") from exc

@@ -35,4 +35,11 @@ poetry.lock
 htmlcov/
 
 # Mypy
-.mypy_cache/
+.mypy_cache/# Coverage reports
+htmlcov/
+.coverage
+.coverage.*
+coverage.xml
+*.cover
+.pytest_cache/
+

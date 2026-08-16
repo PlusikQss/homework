@@ -1,35 +1,29 @@
 def get_mask_card_number(number: str) -> str:
+    """Маскирует номер карты в формат XXXX XX** **** XXXX."""
     if not number:
-        return ""
+        raise ValueError("Номер карты не может быть пустым.")
 
     if not number.isdigit():
         raise ValueError("Номер карты должен содержать только цифры.")
 
-    # Если меньше 4 цифр — ошибка
     if len(number) < 4:
         raise ValueError("Длина номера карты должна быть не менее 4 цифр.")
 
-    # Если не ровно 16 — маскируем как **** (чтобы кейс "4321" работал)
     if len(number) != 16:
         return "****"
 
-    return (
-        f"{number[:4]} "
-        f"{number[4:6]}** **** "
-        f"{number[-4:]}"
-    )
+    return f"{number[:4]} {number[4:6]}** **** {number[-4:]}"
 
 
 def get_mask_account(number: str) -> str:
+    """Маскирует номер счёта в формат **XXXX."""
     if not number:
-        return ""
+        raise ValueError("Номер счёта не может быть пустым.")
 
     if not number.isdigit():
         raise ValueError("Номер счёта должен содержать только цифры.")
 
-    # Если меньше 4 цифр — ошибка
     if len(number) < 4:
         raise ValueError("Номер счёта должен содержать не менее 4 цифр.")
 
-    last_four = number[-4:]
-    return f"**{last_four}"
+    return f"**{number[-4:]}"
