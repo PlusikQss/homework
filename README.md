@@ -1,7 +1,9 @@
-## Тестирование
+## Модуль generators
 
-Проект покрыт тестами с использованием pytest.
+### filter_by_currency
+Фильтрует транзакции по валюте.
 
-### Установка зависимостей для тестирования
-```bash
-poetry install
+```python
+usd_transactions = filter_by_currency(transactions, "USD")
+for transaction in usd_transactions:
+    print(transaction)
