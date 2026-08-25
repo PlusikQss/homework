@@ -1,4 +1,4 @@
-from typing import Any, Dict, Iterator, List, Generator
+from typing import Any, Dict, Generator, Iterator, List
 
 
 def filter_by_currency(
@@ -26,7 +26,9 @@ def filter_by_currency(
             yield transaction
 
 
-def transaction_descriptions(transactions: List[Dict[str, Any]]) -> Generator[str, None, None]:
+def transaction_descriptions(
+    transactions: List[Dict[str, Any]],
+) -> Generator[str, None, None]:
     """
     Возвращает описания транзакций по очереди.
 
@@ -64,7 +66,5 @@ def card_number_generator(start: int, stop: int) -> Generator[str, None, None]:
         # Форматируем номер в 16-значное число с ведущими нулями
         card_number = f"{number:016d}"
         # Разбиваем на блоки по 4 цифры
-        formatted_number = " ".join(
-            card_number[i : i + 4] for i in range(0, 16, 4)
-        )
+        formatted_number = " ".join(card_number[i : i + 4] for i in range(0, 16, 4))
         yield formatted_number
