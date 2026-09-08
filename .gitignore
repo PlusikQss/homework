@@ -35,3 +35,7 @@ poetry.lock
 
 # Mypy
 .mypy_cache/
+
+# Logs
+logs/*.log
+!logs/.gitkeep
