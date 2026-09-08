@@ -34,11 +34,12 @@ packages = [{include = "src"}]
 [tool.black]
 line-length = 88
 target-version = ['py311']
+extend_exclude = ['logs/']
 
 
 [tool.isort]
 profile = "black"
-# line-length не указываем — profile сам задаёт нужную длину
+skip = ['logs/']
 
 [tool.mypy]
 python_version = "3.11"
@@ -58,3 +59,4 @@ omit = ["tests/*", "*/__pycache__/*"]
 
 [tool.coverage.report]
 show_missing = true
+
