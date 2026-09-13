@@ -1,10 +1,8 @@
-### `src/csv_excel_reader.py`
+# Виджет банковских операций
 
-#### `read_csv_file(file_path: str) -> List[Dict[str, Any]]`
-Читает CSV-файл с финансовыми операциями и возвращает список словарей.
+Проект для обработки и отображения банковских операций клиента. Включает чтение данных из JSON, CSV и Excel, маскирование номеров карт и счетов, фильтрацию и сортировку транзакций, работу с генераторами, логирование и конвертацию валют через внешний API.
 
-```python
-from src.csv_excel_reader import read_csv_file
+## Установка
 
-transactions = read_csv_file("data/transactions.csv")
-print(transactions)
+```bash
+poetry install
