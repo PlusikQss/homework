@@ -1,0 +1,2 @@
+2026-09-08 11:29:31,499 - utils - DEBUG - Вызов функции read_json_file с аргументом: data/operations.json
+2026-09-08 11:29:31,499 - utils - DEBUG - Файл data/operations.json успешно прочитан. Количество записей: 2

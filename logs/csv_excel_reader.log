@@ -1,0 +1,28 @@
+2026-09-13 12:33:35,693 - csv_excel_reader - DEBUG - Вызов функции read_csv_file с аргументом: test.csv
+2026-09-13 12:33:35,697 - csv_excel_reader - DEBUG - Файл test.csv успешно прочитан. Количество записей: 2
+2026-09-13 12:33:35,699 - csv_excel_reader - DEBUG - Вызов функции read_csv_file с аргументом: nonexistent.csv
+2026-09-13 12:33:35,699 - csv_excel_reader - ERROR - Файл nonexistent.csv не найден.
+2026-09-13 12:33:35,700 - csv_excel_reader - DEBUG - Вызов функции read_csv_file с аргументом: empty.csv
+2026-09-13 12:33:35,700 - csv_excel_reader - DEBUG - Файл empty.csv успешно прочитан. Количество записей: 0
+2026-09-13 12:33:35,702 - csv_excel_reader - DEBUG - Вызов функции read_csv_file с аргументом: bad.csv
+2026-09-13 12:33:35,702 - csv_excel_reader - ERROR - Ошибка при чтении CSV-файла bad.csv: Some error
+2026-09-13 12:33:35,703 - csv_excel_reader - DEBUG - Вызов функции read_csv_file с аргументом: test.csv
+2026-09-13 12:33:35,703 - csv_excel_reader - DEBUG - Файл test.csv успешно прочитан. Количество записей: 1
+2026-09-13 12:33:35,704 - csv_excel_reader - DEBUG - Вызов функции read_csv_file с аргументом: test.csv
+2026-09-13 12:33:35,705 - csv_excel_reader - DEBUG - Файл test.csv успешно прочитан. Количество записей: 2
+2026-09-13 12:33:35,706 - csv_excel_reader - DEBUG - Вызов функции read_csv_file с аргументом: test.csv
+2026-09-13 12:33:35,706 - csv_excel_reader - DEBUG - Файл test.csv успешно прочитан. Количество записей: 0
+2026-09-13 12:33:35,707 - csv_excel_reader - DEBUG - Вызов функции read_excel_file с аргументом: test.xlsx
+2026-09-13 12:33:35,708 - csv_excel_reader - DEBUG - Файл test.xlsx успешно прочитан. Количество записей: 2
+2026-09-13 12:33:35,708 - csv_excel_reader - DEBUG - Вызов функции read_excel_file с аргументом: nonexistent.xlsx
+2026-09-13 12:33:35,709 - csv_excel_reader - ERROR - Файл nonexistent.xlsx не найден.
+2026-09-13 12:33:35,709 - csv_excel_reader - DEBUG - Вызов функции read_excel_file с аргументом: empty.xlsx
+2026-09-13 12:33:35,710 - csv_excel_reader - DEBUG - Файл empty.xlsx успешно прочитан. Количество записей: 0
+2026-09-13 12:33:35,710 - csv_excel_reader - DEBUG - Вызов функции read_excel_file с аргументом: bad.xlsx
+2026-09-13 12:33:35,710 - csv_excel_reader - ERROR - Ошибка при чтении Excel-файла bad.xlsx: Some error
+2026-09-13 12:33:35,711 - csv_excel_reader - DEBUG - Вызов функции read_excel_file с аргументом: test.xlsx
+2026-09-13 12:33:35,712 - csv_excel_reader - DEBUG - Файл test.xlsx успешно прочитан. Количество записей: 1
+2026-09-13 12:33:35,713 - csv_excel_reader - DEBUG - Вызов функции read_excel_file с аргументом: test.xlsx
+2026-09-13 12:33:35,713 - csv_excel_reader - DEBUG - Файл test.xlsx успешно прочитан. Количество записей: 3
+2026-09-13 12:33:35,714 - csv_excel_reader - DEBUG - Вызов функции read_excel_file с аргументом: test.xlsx
+2026-09-13 12:33:35,714 - csv_excel_reader - DEBUG - Файл test.xlsx успешно прочитан. Количество записей: 0
